@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lectures', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger("course_id");
+        Schema::create('enrollments', function (Blueprint $table) {
+            $table->unsignedInteger("student_id");
             $table->unsignedInteger("sec_id");
-            $table->string("title");
-            $table->date("date");
-            $table->time("time");
-            $table->string("location");
+            $table->unsignedInteger("course_id");
             $table->timestamps();
+            $table->foreign("student_id")->references("id")->on("students");
             $table->foreign(["sec_id","course_id"])->references(["id","course_id"])->on("sections");
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lectures');
+        Schema::dropIfExists('enrollments');
     }
 };
