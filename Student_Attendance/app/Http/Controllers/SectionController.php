@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use PhpParser\Node\Scalar\String_;
 
 class SectionController extends Controller
 {
@@ -12,7 +14,9 @@ class SectionController extends Controller
      */
     public function index()
     {
-        //
+        $sections = Section::all();
+
+        return view('sections.index',compact('sections'));
     }
 
     /**
@@ -20,7 +24,8 @@ class SectionController extends Controller
      */
     public function create()
     {
-        //
+        $courses = Course::all();
+        return view('sections.create',compact('courses'));
     }
 
     /**
@@ -28,38 +33,61 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = $request->validate([
+            'course_id' => 'required|string',
+            'year' => 'required|int|min:2000|max:2024',
+            'semester' => 'required|string|[winter,summer,fall]'
+        ]);
+        Section::created($validation);
+
+        return redirect()->route('sections.index')->with('success','Section add successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Section $section)
+    public function show(String $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        return view('sections.show',compact('section'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Section $section)
+    public function edit(String $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        $courses = Course::all();
+
+        return view('sections.edit', compact(['section',['courses']]));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request, String $id)
     {
-        //
+        $validation = $request->validate([
+            'course_id' => 'required|string',
+            'year' => 'required|int|min:2000|max:2024',
+            'semester' => 'required|string|[winter,summer,fall]'
+        ]);
+
+        $section = Section::findOrFail($id);
+        $section->update($validation);
+
+        return redirect()->route('sections.index')->with('success','Section updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Section $section)
+    public function destroy(String $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        $section->delete();
+
+        return redirect()->route('sections.index')->with('success','Section deleted successfully');
     }
 }
