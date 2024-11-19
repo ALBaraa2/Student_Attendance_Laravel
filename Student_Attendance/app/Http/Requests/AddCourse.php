@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class addCourse extends FormRequest
 {
@@ -11,7 +12,7 @@ class addCourse extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,9 @@ class addCourse extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'course_id' => ['required','string','regex:/^[A-Z]{4}[0-9]{4}$/', Rule::unique('courses', 'course_id')],
+            'name' => 'required|string',
+            'description' => 'required|string'
         ];
     }
 }
