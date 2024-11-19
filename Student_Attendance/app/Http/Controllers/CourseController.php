@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCourse;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -27,15 +28,10 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddCourse $request)
     {
-        $validation = $request->validate([
-            'course_id' => 'required | string',
-            'name' => 'required|string',
-            'description' => 'required|string',
-        ]);
-
-        Course::created($validation);
+        $data = $request->all();
+        Course::query()->create($data);
 
         return redirect()->route('courses.index')->with('success', 'Course created successfully');
     }
@@ -64,17 +60,11 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, String $id)
+    public function update(AddCourse $request, String $id)
     {
-        $validation = $request->validate([
-            'course_id' => 'required | string',
-            'name' => 'required|string',
-            'description' => 'required|string',
-        ]);
-
+        $data = $request->all();
         $course = Course::findOrFail($id);
-
-        $course->update($validation);
+        $course->update($data);
 
         return redirect()->route('courses.index')->with('success','Course Updated successfully');
     }
