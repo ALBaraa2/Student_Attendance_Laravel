@@ -20,6 +20,7 @@
             <th>Coures id</th>
             <th>Course Name</th>
             <th>Description</th>
+            <th>Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
             <td>{{ $course->course_id }}</td>
             <td>{{ $course->name }}</td>
             <td>{{ $course->description }}</td>
+            <td>
+                <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-warning">Edit</a>
+            </td>
         </tr>
         @endforeach
         </tbody>
