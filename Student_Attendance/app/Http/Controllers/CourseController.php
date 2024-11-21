@@ -50,34 +50,34 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(String $id)
+    /**public function edit(String $id)
     {
         $course = Course::findOrFail($id);
 
         return view('courses.edit', compact('course'));
-    }
+    }*/
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(AddCourse $request, String $id)
+    /**public function update(AddCourse $request, String $id)
     {
         $data = $request->all();
         $course = Course::findOrFail($id);
         $course->update($data);
 
         return redirect()->route('courses.index')->with('success','Course Updated successfully');
-    }
+    }*/
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(String $id)
+    /**public function destroy(String $id)
     {
         $course = Course::findOrFail($id);
 
         $course->delete();
 
         return redirect()->route('courses.index')->with('success', 'Course deleted successfully.');
-    }
+    }*/
 }
