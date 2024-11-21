@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Section;
+use Carbon\Traits\Date;
 use Illuminate\Http\Request;
 use PhpParser\Node\Scalar\String_;
 
@@ -14,7 +15,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = Section::all();
+        $sections = Section::with(['course'])->get();
 
         return view('sections.index',compact('sections'));
     }
@@ -33,14 +34,14 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = $request->validate([
-            'course_id' => 'required|string',
-            'year' => 'required|int|min:2000|max:2024',
-            'semester' => 'required|string|[winter,summer,fall]'
-        ]);
-        Section::created($validation);
+        $data = [
+            'course_id' =>  $request->input('course_id'),
+            'year' => '2024',
+            'semester' => 'Fall'
+        ];
+        Section::query()->create($data);
 
-        return redirect()->route('sections.index')->with('success','Section add successfully');
+        return redirect()->route('courses.index')->with('success','Section add successfully');
     }
 
     /**
@@ -57,10 +58,10 @@ class SectionController extends Controller
      */
     public function edit(String $id)
     {
-        $section = Section::findOrFail($id);
+        $section = Section::query()->findOrFail($id);
         $courses = Course::all();
 
-        return view('sections.edit', compact(['section',['courses']]));
+        return view('sections.edit', compact(['section','courses']));
     }
 
     /**
