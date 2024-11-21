@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -18,6 +19,8 @@ return new class extends Migration
             $table->string("description");
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE courses ADD CONSTRAINT check_course_id CHECK (course_id ~ '^[A-Za-z]{4}\d{4}$')");
     }
 
     /**

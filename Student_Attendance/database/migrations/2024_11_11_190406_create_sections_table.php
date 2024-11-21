@@ -26,15 +26,15 @@ return new class extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->unique(['id','course_id']);
         });
-        // Add a check constraint for the year format using raw SQL
+        
         DB::statement("
-            ALTER TABLE sections ADD CONSTRAINT check_year_format
-            CHECK (
-                year ~ '^[0-9]{4}-[0-9]{4}$' AND
+            alter table sections add constraint check_year_format
+            check (
+                year ~ '^[0-9]{4}-[0-9]{4}$' and
                 substring(year, 6, 4)::int = substring(year, 1, 4)::int + 1
             )
         ");
-        DB::statement("ALTER TABLE sections ADD CONSTRAINT check_semester CHECK (semester IN ('Fall', 'Spring', 'Summer'))");
+        DB::statement("alter table sections add constraint check_semester check (semester in ('Fall', 'Spring', 'Summer'))");
     }
 
     /**
