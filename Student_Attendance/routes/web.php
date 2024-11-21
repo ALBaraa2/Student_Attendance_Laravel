@@ -11,7 +11,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('courses',CourseController::class);
+Route::resource('courses',CourseController::class)->except('edit','update');
 Route::resource('students', StudentController::class);
 Route::resource('assistants', TeachAssistantController::class);
 Route::resource('sections', SectionController::class);
