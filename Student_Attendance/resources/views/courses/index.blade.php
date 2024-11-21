@@ -17,10 +17,10 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Coures id</th>
+            <th>Course id</th>
             <th>Course Name</th>
             <th>Description</th>
-            <th>Edit</th>
+            <th>Add Section</th>
         </tr>
         </thead>
         <tbody>
@@ -31,7 +31,20 @@
             <td>{{ $course->name }}</td>
             <td>{{ $course->description }}</td>
             <td>
-                <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-warning">Edit</a>
+                <form action="{{ route('sections.store') }}" method="post">
+                    @csrf
+                    <button type="submit"
+                    class="btn btn-primary">
+                        add this course to this semester
+                    </button>
+                    <input
+                        type="text"
+                        name="course_id"
+                        id="course_id"
+                        value="{{$course->id}}"
+                        hidden="hidden"
+                    >
+                </form>
             </td>
         </tr>
         @endforeach

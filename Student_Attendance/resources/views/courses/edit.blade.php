@@ -18,7 +18,7 @@
         @method('PUT')
         <div class="form-group">
             <label>Course id:</label>
-            <input type="text" name="course_id" id="course_id" value="{{ $course->course_id }}">
+            <input type="text" id="course_id" value="{{ $course->course_id }}" disabled>
         </div>
 
         <div class="form-group">
