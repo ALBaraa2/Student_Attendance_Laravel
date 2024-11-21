@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -27,8 +28,7 @@ return new class extends Migration
         });
         // Add a check constraint for the year format using raw SQL
         DB::statement("
-            ALTER TABLE sections
-            ADD CONSTRAINT check_year_format
+            ALTER TABLE sections ADD CONSTRAINT check_year_format
             CHECK (
                 year ~ '^[0-9]{4}-[0-9]{4}$' AND
                 substring(year, 6, 4)::int = substring(year, 1, 4)::int + 1
