@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Section;
 use Carbon\Traits\Date;
+use DateTimeZone;
 use Illuminate\Http\Request;
-use PhpParser\Node\Scalar\String_;
 
 class SectionController extends Controller
 {
@@ -34,14 +34,36 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = [
-            'course_id' =>  $request->input('course_id'),
-            'year' => '2024',
-            'semester' => 'Fall'
-        ];
-        Section::query()->create($data);
 
-        return redirect()->route('courses.index')->with('success','Section add successfully');
+        $course_id = $request->input('course_id');
+        $currentYear = date('Y');
+        $nextYear = date('Y') + 1;
+        $year = "$currentYear-$nextYear"; //this year + this year+1 like   2025-2026
+        $currentMonth = date('M');
+        if ($currentMonth >= 1 && $currentMonth <= 5) {
+            $semester = 'Spring'; // January to May
+        } elseif ($currentMonth >= 6 && $currentMonth <= 8) {
+            $semester = 'Summer'; // June to August
+        } else {
+            $semester = 'Fall'; // September to December
+        }
+        $data = [
+            'course_id' =>  $course_id,
+            'year' => $year,
+            'semester' => $semester
+        ];
+
+        $isCourseExistsInSection = Section::where('course_id', $course_id)
+            ->where('year', $year)
+            ->where('semester', $semester)
+            ->exists();
+        if (!$isCourseExistsInSection) {
+            Section::query()->create($data);
+            $success = 'Section add successfully';
+        } else
+            $success = 'This course is in this section';
+
+        return redirect()->route('courses.index')->with('success',"$success");
     }
 
     /**
