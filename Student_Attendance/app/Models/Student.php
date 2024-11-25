@@ -12,8 +12,11 @@ class Student extends Model
     protected $table = 'students';
 
     protected $fillable = [
+        'id',
         'name',
-        'gender'
+        'gender',
+        'student_id',
+        'year_of_enrollment'
     ];
 
     public function user()
