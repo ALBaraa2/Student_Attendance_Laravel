@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('teach_assistants', function (Blueprint $table) {
             $table->string('teach_assistant_id')->after('id')->unique();
+            $table->year('year_of_enrollment')->after('teach_assistant_id');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('teach_assistants', function (Blueprint $table) {
             $table->dropColumn('teach_assistant_id');
+            $table->dropColumn('year_of_enrollment');
         });
     }
 };
