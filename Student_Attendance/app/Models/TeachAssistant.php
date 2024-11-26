@@ -12,12 +12,15 @@ class TeachAssistant extends Model
     protected $table = 'teach_assistants';
 
     protected $fillable = [
-        'name'
+        'id',
+        'name',
+        'teach_assistant_id',
+        'year_of_enrollment'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'id','id');
     }
 
 }
